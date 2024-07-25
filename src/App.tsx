@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import Product from './components/Product'
+import { IProducts } from './models';
 
 function App() {
+
+  const [products, setProducts] = useState<IProducts[]>([]);
+  const [loading, setLoading] = useState(false)
+  const getResource = async (url: string) => {
+    setLoading(true);
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+    }
+    const data = await res.json();
+    setLoading(false); // Встановлюємо loading на false після отримання даних
+    return data;
+  };
+
+  useEffect(() => {
+    getResource('https://fakestoreapi.com/products?limit=4')
+      .then(data => setProducts(data))
+      .catch(error => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container mx-auto max-w-2xl pt-5">
+      {loading && <p className='text-center'>LOADING...</p>}
+      {products.map(product => <Product product={product} key={product.id} />)}
     </div>
   );
 }
+
+56:05
 
 export default App;
