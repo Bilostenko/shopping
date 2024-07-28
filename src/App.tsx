@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Product from './components/Product'
 import { IProducts } from './models';
+import { Modal } from './components/Modal';
+import CreateProduct from './components/CreateProduct';
 
 function App() {
 
@@ -30,10 +32,12 @@ function App() {
     <div className="container mx-auto max-w-2xl pt-5">
       {loading && <p className='text-center'>LOADING...</p>}
       {products.map(product => <Product product={product} key={product.id} />)}
+      < Modal title="Create new product">
+        < CreateProduct />
+      </Modal>
     </div>
   );
 }
 
-56:05
 
 export default App;
