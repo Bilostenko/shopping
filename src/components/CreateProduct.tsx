@@ -13,7 +13,11 @@ const productData: IProducts = {
   }
 }
 
-const CreateProduct = () => {
+interface CreateProductProps {
+  onCreate: (product: IProducts) => void
+}
+
+const CreateProduct = ({ onCreate }: CreateProductProps) => {
   const [value, setValue] = useState('');
   const [error, setError] = useState(false);
 
@@ -30,23 +34,20 @@ const CreateProduct = () => {
       return;
     }
 
-    productData.title = value;
+    const newProduct = { ...productData, title: value };
 
     fetch('https://fakestoreapi.com/products', {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        title: value,
-        price: 13.5,
-        description: 'lorem ipsum set',
-        image: 'https://i.pravatar.cc',
-        category: 'electronic'
-      })
+      body: JSON.stringify(newProduct)
     })
       .then(res => res.json())
-      .then(json => console.log("this is", json))
+      .then(json => {
+        console.log("this is", json);
+        onCreate(json);
+      })
       .catch(error => console.error('Error:', error));
   }
 

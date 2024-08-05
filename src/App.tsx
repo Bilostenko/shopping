@@ -8,6 +8,13 @@ function App() {
 
   const [products, setProducts] = useState<IProducts[]>([]);
   const [loading, setLoading] = useState(false)
+  const [modal, setModal] = useState(true)
+
+  const createHandler = (product: IProducts) => {
+    setProducts(prevProducts => [...prevProducts, product]);
+    setModal(false);
+  }
+
   const getResource = async (url: string) => {
     setLoading(true);
     const res = await fetch(url);
@@ -32,12 +39,15 @@ function App() {
     <div className="container mx-auto max-w-2xl pt-5">
       {loading && <p className='text-center'>LOADING...</p>}
       {products.map(product => <Product product={product} key={product.id} />)}
-      < Modal title="Create new product">
-        < CreateProduct />
+
+      {modal && < Modal title="Create new product" onClose={()=> setModal(false)}>
+        < CreateProduct onCreate = {createHandler}/>
       </Modal>
+      }
     </div>
   );
 }
 
-
 export default App;
+
+ 12:43
