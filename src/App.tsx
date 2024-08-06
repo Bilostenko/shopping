@@ -44,10 +44,12 @@ function App() {
         < CreateProduct onCreate = {createHandler}/>
       </Modal>
       }
+      <button
+       className='fixed bottom-5 right-5 rounded-full bg-yellow-700 text-white text-2xl px-4 py-2'
+       onClick={() => setModal(true)}
+       >+</button>
     </div>
   );
 }
 
 export default App;
-
- 12:43
